@@ -60,17 +60,23 @@
         },
         methods: {
             createRowData() {
-                const rowData = [];
+                console.time("Creating row data");
 
-                for (let i = 0; i < 15; i++) {
-                    rowData.push({
-                        row: "Row " + i,
-                        value: i,
-                        currency: i + Number(Math.random().toFixed(2))
-                    });
+                if (!window.rowData) {
+                  window.rowData = [];
+
+                  for (let i = 0; i < 20000; i++) {
+                      window.rowData.push({
+                          row: "Row " + i,
+                          value: i,
+                          currency: i + Number(Math.random().toFixed(2))
+                      });
+                  }
                 }
 
-                this.rowData = rowData;
+                this.rowData = window.rowData;
+
+                console.timeEnd("Creating row data");
             },
             createColumnDefs() {
                 this.columnDefs = [
@@ -118,6 +124,7 @@
             }
         },
         beforeMount() {
+            console.time("Grid init");
             this.gridOptions = {
                 context: {
                     componentParent: this
@@ -128,6 +135,7 @@
         },
         mounted() {
             this.gridOptions.api.sizeColumnsToFit();
+            console.timeEnd("Grid init");
         }
     }
 </script>
